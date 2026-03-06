@@ -7,6 +7,9 @@ use App\Models\User;
 
 class BookPolicy
 {
+
+    // La lista y el detalle de libros es público, pero solo los bibliotecarios pueden modificar libros (crear, actualizar, eliminar)
+
     /**
      * Determine whether the user can view any models.
      */
@@ -28,7 +31,7 @@ class BookPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasRole('bibliotecario');
     }
 
     /**
@@ -36,7 +39,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book): bool
     {
-        return true;
+        return $user->hasRole('bibliotecario');
     }
 
     /**
@@ -44,22 +47,6 @@ class BookPolicy
      */
     public function delete(User $user, Book $book): bool
     {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Book $book): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Book $book): bool
-    {
-        return true;
+        return $user->hasRole('bibliotecario');
     }
 }

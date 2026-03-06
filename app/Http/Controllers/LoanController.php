@@ -10,12 +10,23 @@ use Illuminate\Http\Request;
 
 class LoanController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Loan::class, 'loan');
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $loans = Loan::with('book')->paginate();
+        $query = Loan::with('book');
+
+        if (! $request->user()->hasRole('bibliotecario')) {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $loans = $query->paginate();
 
         return response()->json(LoanResource::collection($loans));
     }
@@ -32,8 +43,8 @@ class LoanController extends Controller
         }
 
         $loan = Loan::create([
-            'requester_name' => $request->input('requester_name'),
             'book_id' => $request->input('book_id'),
+            'user_id' => $request->user()->id,
         ]);
 
         $book->update([
@@ -42,7 +53,6 @@ class LoanController extends Controller
         ]);
 
         return response()->json($loan, 201);
-
     }
 
     /**
