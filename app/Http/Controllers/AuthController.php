@@ -10,6 +10,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (Auth::attempt($request->only('email', 'password'))) {
+            /** @var User $user */
             $user = Auth::user();
             $token = $user->createToken('auth_token');
 
@@ -27,6 +28,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        /** @var User $user */
         $user = Auth::user();
         $user->tokens()->delete();
 
