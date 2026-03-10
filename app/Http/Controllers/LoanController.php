@@ -7,6 +7,7 @@ use App\Http\Resources\LoanResource;
 use App\Models\Book;
 use App\Models\Loan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LoanController extends Controller
 {
@@ -42,15 +43,19 @@ class LoanController extends Controller
             return response()->json(['message' => 'Book is not available'], 422);
         }
 
-        $loan = Loan::create([
-            'book_id' => $request->input('book_id'),
-            'user_id' => $request->user()->id,
-        ]);
+        $loan = DB::transaction(function () use ($book, $request) {
+            $newLoan = Loan::create([
+                'book_id' => $book->id,
+                'user_id' => $request->user()->id,
+            ]);
 
-        $book->update([
-            'available_copies' => $book->available_copies - 1,
-            'is_available' => $book->available_copies - 1 > 0,
-        ]);
+            $book->update([
+                'available_copies' => $book->available_copies - 1,
+                'is_available' => $book->available_copies - 1 > 0,
+            ]);
+
+            return $newLoan;
+        });
 
         return response()->json($loan, 201);
     }

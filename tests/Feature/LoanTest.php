@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
-class PrestamoTest extends TestCase
+class LoanTest extends TestCase
 {
     use RefreshDatabase;
 

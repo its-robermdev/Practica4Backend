@@ -22,7 +22,6 @@ class StoreLoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['integer', 'required', 'exists:users,id'],
             'book_id' => ['integer', 'required', 'exists:books,id'],
         ];
     }

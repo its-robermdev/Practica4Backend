@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 
-class PrestamoUnitTest extends TestCase
+class LoanUnitTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Tests\TestCase;
 
-class LibroUnitTest extends TestCase
+class BookUnitTest extends TestCase
 {
     use RefreshDatabase;
 
